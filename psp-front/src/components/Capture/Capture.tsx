@@ -3,16 +3,12 @@
 import { useEffect } from 'react';
 import { Flex, Box, Button } from '@chakra-ui/react';
 import '../../App.css';
-import { capturePayPalPayment } from '../../services/payPalService';
 function Capture() {
 	useEffect(() => {
 		console.log(location);
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
 		const pid = params.get('pId');
-		capturePayPalPayment(pid ? pid : '', '').then((data) => {
-			console.log(data.data);
-		});
 	}, []);
 
 	return (

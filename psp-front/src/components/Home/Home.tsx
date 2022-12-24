@@ -14,14 +14,13 @@ function Home() {
 		const t = params.get('total');
 		setTotalState(t ? (t as unknown as number) : 0);
 	}, []);
-	const PayClick = () => {
-		console.log(
-			'Saljem request apiju za url do PSP frontenda. Cena registracije 10usd'
-		);
-		pay(totalState).then((data) => {
-			console.log('I should redirect to -> ', data.data.value);
-			window.location.href = data.data.value + '?total=10';
-		});
+	const PayClick = async () => {
+		const data = await pay(totalState);
+		console.log('I should redirect to -> ', data.data);
+		window.location.href = data.data + '?total=10';
+		// pay(totalState).await((data) => {
+
+		// });
 	};
 	return (
 		<Flex
