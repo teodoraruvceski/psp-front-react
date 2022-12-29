@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Home from './components/Home/Home';
 import Capture from './components/Capture/Capture';
+import Success from './components/Success/Success';
 export const App = () => (
 	<ChakraProvider theme={theme}>
 		<Box textAlign='center' fontSize='xl'>
@@ -14,6 +15,9 @@ export const App = () => (
 				</Routes>
 				<Routes>
 					<Route path='/capture-payment' element={<Capture />} />
+				</Routes>
+				<Routes>
+					<Route path='/success' element={<Success />} />
 				</Routes>
 			</Grid>
 		</Box>

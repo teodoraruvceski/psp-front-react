@@ -1,10 +1,9 @@
 import axios from 'axios';
 
-export const pay = async (total: number) => {
-	console.log('pre');
+export const paypalPayment = async (total: number, id: string) => {
 	const data = await axios.post(
-		'http://localhost:3005/payRegistration?total=' + total
+		'http://localhost:5000/payRegistration?total=' + total + '&paymentId=' + id
 	);
-	console.log(data);
+	console.log('response:' + data);
 	return data;
 };

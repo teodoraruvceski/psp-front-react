@@ -4,24 +4,31 @@
 import { useState, useEffect } from 'react';
 import { Flex, Box, Button } from '@chakra-ui/react';
 import '../../App.css';
-import { pay } from '../../services/payPalService';
+import { paypalPayment } from '../../services/payPalService';
 function Home() {
 	const [totalState, setTotalState] = useState(0);
+	const [paymentIdState, setPaymentId] = useState('');
 	useEffect(() => {
 		console.log(location);
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
 		const t = params.get('total');
+		const pid = params.get('paymentId');
 		setTotalState(t ? (t as unknown as number) : 0);
-	}, []);
-	const PayClick = async () => {
-		const data = await pay(totalState);
-		console.log('I should redirect to -> ', data.data);
-		window.location.href = data.data + '?total=10';
+		setPaymentId(pid ? (pid as unknown as string) : 'error');
+		console.log('pid:', paymentIdState);
+	}, [totalState, paymentIdState]);
+	const PayPal = async () => {
+		const data = await paypalPayment(totalState, paymentIdState);
+		console.log('pidd:', paymentIdState);
+		console.log(data.data);
+		window.location.href = data.data;
 		// pay(totalState).await((data) => {
 
 		// });
 	};
+	const Card = async () => {};
+	const Crypto = async () => {};
 	return (
 		<Flex
 			flexDirection='column'
@@ -32,14 +39,15 @@ function Home() {
 			alignItems='center'
 		>
 			<Box>
-				<Button
-					onClick={PayClick}
-					width='500px'
-					height='50px'
-					bgColor='#FFC43A'
-				>
+				<Button onClick={PayPal} width='500px' height='50px' bgColor='#FFC43A'>
 					<b>Pay</b>
 					<b className='pal'>Pal</b>
+				</Button>
+				<Button onClick={Card} width='500px' height='50px' bgColor='#FFC43A'>
+					<b>Card</b>
+				</Button>
+				<Button onClick={Crypto} width='500px' height='50px' bgColor='#FFC43A'>
+					<b>Crypto</b>
 				</Button>
 			</Box>
 		</Flex>
