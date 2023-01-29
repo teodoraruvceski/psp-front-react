@@ -2,9 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable no-restricted-globals */
 import { useState, useEffect } from 'react';
-import { Flex, Box, Button } from '@chakra-ui/react';
+import { Flex, Box, Button, Image } from '@chakra-ui/react';
 import '../../App.css';
-import { paypalPayment } from '../../services/payPalService';
+import { choosePayment } from '../../services/paymentService';
+import cardLogo from './images/card.png';
+import ppText from './images/paypalText.png';
+import cryptoLogo from './images/crypto.png';
+import qrLogo from './images/qr.png';
+import { getAmount } from '../../services/service';
 function Home() {
 	const [totalState, setTotalState] = useState(0);
 	const [paymentIdState, setPaymentId] = useState('');
@@ -12,100 +17,91 @@ function Home() {
 		console.log(location);
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
-		const t = params.get('total');
+		//const t = params.get('total');
 		const pid = params.get('paymentId');
-		setTotalState(t ? (t as unknown as number) : 0);
+		const get = async () => {
+			const data = await getAmount(pid || '');
+			console.log(data);
+			setTotalState(data.data.amount);
+		};
+		get();
+		//setTotalState(t ? (t as unknown as number) : 0);
 		setPaymentId(pid ? (pid as unknown as string) : 'error');
 		console.log('pid:', paymentIdState);
 	}, [totalState, paymentIdState]);
-	const PayPal = async () => {
-		const data = await paypalPayment(totalState, paymentIdState);
+	const pay = async (route: string) => {
+		const data = await choosePayment(totalState, paymentIdState, route);
 		console.log('pidd:', paymentIdState);
-		console.log(data.data);
-		window.location.href = data.data;
-		// pay(totalState).await((data) => {
-
+		console.log(data); // should be {url,paymentId}
+		// history.push({
+		// 	path: data.data.url,
+		// 	state: {
+		// 		paymentId: data.data.paymentId,
+		// 	},
 		// });
+		window.location.href = data.data.url + `?paymentId=${data.data.paymentId}`;
 	};
 	const Card = async () => {};
 	const Crypto = async () => {};
+	const QR = async () => {};
 	return (
 		<Flex
-			flexDirection='column'
-			width='100wh'
-			height='100vh'
+			flexDirection='row'
+			width='100%'
+			height='100%'
 			backgroundColor='white'
 			justifyContent='center'
 			alignItems='center'
 		>
-			<Box>
-				<Button onClick={PayPal} width='500px' height='50px' bgColor='#FFC43A'>
-					<b>Pay</b>
-					<b className='pal'>Pal</b>
-				</Button>
-				<Button onClick={Card} width='500px' height='50px' bgColor='#FFC43A'>
-					<b>Card</b>
-				</Button>
-				<Button onClick={Crypto} width='500px' height='50px' bgColor='#FFC43A'>
-					<b>Crypto</b>
-				</Button>
-			</Box>
+			<Button
+				margin='10px'
+				onClick={() => pay('pay-by-paypal')}
+				width='20%'
+				height='40%'
+				bgColor='#FFC43A'
+			>
+				<Image margin='5px' width='70%' height='30%' src={ppText} />
+			</Button>
+			<Button
+				margin='10px'
+				onClick={() => pay('pay-by-card')}
+				width='20%'
+				height='40%'
+				bgColor='#FFC43A'
+			>
+				<Image margin='5px' width='60%' height='70%' src={cardLogo} />
+			</Button>
+			<Button
+				margin='10px'
+				onClick={() => pay('pay-by-crypto')}
+				width='20%'
+				height='40%'
+				bgColor='#FFC43A'
+			>
+				<Image
+					backgroundColor='transparent'
+					margin='5px'
+					width='60%'
+					height='70%'
+					src={cryptoLogo}
+				/>
+			</Button>
+			<Button
+				margin='10px'
+				onClick={() => pay('pay-by-qr')}
+				width='20%'
+				height='40%'
+				bgColor='#FFC43A'
+			>
+				<Image
+					backgroundColor='transparent'
+					margin='5px'
+					width='50%'
+					height='70%'
+					src={qrLogo}
+				/>
+			</Button>
 		</Flex>
-		// <div className='row row-cols-1 row-cols-md-3 mb-3 text-center'>
-		// 	<div className='col'>
-		// 		<div className='card mb-4 rounded-3 shadow-sm border-primary'>
-		// 			<div className='card-header py-3 text-white bg-primary border-primary'>
-		// 				<h4 className='my-0 fw-normal'>Pay Pal</h4>
-		// 			</div>
-		// 			<div className='card-body'>
-		// 				<img src='./images/paypal.png' width='200' height='200' />
-		// 				<button
-		// 					onClick={PayClick}
-		// 					type='button'
-		// 					className='w-100 btn btn-lg btn-primary'
-		// 				>
-		// 					Pay
-		// 				</button>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// 	<div className='col'>
-		// 		<div className='card mb-4 rounded-3 shadow-sm border-primary'>
-		// 			<div className='card-header py-3 text-white bg-primary border-primary'>
-		// 				<h4 className='my-0 fw-normal'>Bank</h4>
-		// 			</div>
-		// 			<div className='card-body'>
-		// 				<img title='aa' src='./images/bank.png' width='200' height='200' />
-
-		// 				<button
-		// 					onClick={PayClick}
-		// 					type='button'
-		// 					className='w-100 btn btn-lg btn-primary'
-		// 				>
-		// 					Pay
-		// 				</button>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// 	<div className='col'>
-		// 		<div className='card mb-4 rounded-3 shadow-sm border-primary'>
-		// 			<div className='card-header py-3 text-white bg-primary border-primary'>
-		// 				<h4 className='my-0 fw-normal'>Bitcoin</h4>
-		// 			</div>
-		// 			<div className='card-body'>
-		// 				<img src='./images/bitcoin.png' width='200' height='200' />
-
-		// 				<button
-		// 					onClick={PayClick}
-		// 					type='button'
-		// 					className='w-100 btn btn-lg btn-primary'
-		// 				>
-		// 					Pay
-		// 				</button>
-		// 			</div>
-		// 		</div>
-		// 	</div>
-		// </div>
 	);
 }
 export default Home;

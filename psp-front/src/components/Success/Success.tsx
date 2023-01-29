@@ -4,6 +4,7 @@ import { getAgencyUrlSuccessfullRegistration } from '../../services/service';
 import '../../App.css';
 function Success() {
 	const backToAgency = async () => {
+		console.log('vrati se');
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
 		const pid = params.get('paymentId');
