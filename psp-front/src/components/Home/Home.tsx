@@ -39,6 +39,7 @@ function Home() {
 		// 		paymentId: data.data.paymentId,
 		// 	},
 		// });
+		if (data.data.paymentId === '') window.location.href = data.data.url;
 		window.location.href = data.data.url + `?paymentId=${data.data.paymentId}`;
 	};
 	const Card = async () => {};

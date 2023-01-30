@@ -5,6 +5,8 @@ import { ColorModeSwitcher } from './ColorModeSwitcher';
 import Home from './components/Home/Home';
 import Capture from './components/Capture/Capture';
 import Success from './components/Success/Success';
+import Error from './components/Error/Error';
+import Cancel from './components/Cancel/Cancel';
 export const App = () => (
 	<ChakraProvider theme={theme}>
 		<Box textAlign='center' fontSize='xl'>
@@ -18,6 +20,12 @@ export const App = () => (
 				</Routes>
 				<Routes>
 					<Route path='/success' element={<Success />} />
+				</Routes>
+				<Routes>
+					<Route path='/error' element={<Error />} />
+				</Routes>
+				<Routes>
+					<Route path='/cancel' element={<Cancel />} />
 				</Routes>
 			</Grid>
 		</Box>

@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import { Flex, Box, Button, Text } from '@chakra-ui/react';
-import { getAgencyUrlSuccessfullRegistration } from '../../services/service';
+import { getAgencyUrlErrorPayment } from '../../services/service';
 import '../../App.css';
-function Success() {
+function Error() {
 	const backToAgency = async () => {
 		console.log('vrati se');
 		const search = window.location.search;
 		const params = new URLSearchParams(search);
 		const pid = params.get('payment_id');
-		console.log(pid);
 		//get agency-back url from psp api
-		const link = await getAgencyUrlSuccessfullRegistration(pid || '');
+		const link = await getAgencyUrlErrorPayment(pid || '');
 		console.log(link);
 		window.location.href = `${link.data}?paymentId=${pid}`;
 	};
@@ -24,7 +23,7 @@ function Success() {
 			alignItems='center'
 			borderColor='#85AF58'
 		>
-			<Text fontSize='6xl'>Plaćanje uspešno izvršeno!</Text>
+			<Text fontSize='6xl'>Plaćanje nije uspešno izvršeno!</Text>
 
 			<Box>
 				<Button
@@ -39,4 +38,4 @@ function Success() {
 		</Flex>
 	);
 }
-export default Success;
+export default Error;

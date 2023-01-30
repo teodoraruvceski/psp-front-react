@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Flex, Box, Button, Text } from '@chakra-ui/react';
-import { getAgencyUrlSuccessfullRegistration } from '../../services/service';
+import { getAgencyUrlCancelPayment } from '../../services/service';
 import '../../App.css';
-function Success() {
+function Cancel() {
 	const backToAgency = async () => {
 		console.log('vrati se');
 		const search = window.location.search;
@@ -10,9 +10,9 @@ function Success() {
 		const pid = params.get('payment_id');
 		console.log(pid);
 		//get agency-back url from psp api
-		const link = await getAgencyUrlSuccessfullRegistration(pid || '');
+		const link = await getAgencyUrlCancelPayment(pid || '');
 		console.log(link);
-		window.location.href = `${link.data}?paymentId=${pid}`;
+		window.location.href = `${link.data}`;
 	};
 	return (
 		<Flex
@@ -24,7 +24,7 @@ function Success() {
 			alignItems='center'
 			borderColor='#85AF58'
 		>
-			<Text fontSize='6xl'>Plaćanje uspešno izvršeno!</Text>
+			<Text fontSize='6xl'>Plaćanje poništeno!</Text>
 
 			<Box>
 				<Button
@@ -39,4 +39,4 @@ function Success() {
 		</Flex>
 	);
 }
-export default Success;
+export default Cancel;
