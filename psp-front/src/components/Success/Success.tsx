@@ -11,6 +11,7 @@ function Success() {
 		console.log(pid);
 		//get agency-back url from psp api
 		const link = await getAgencyUrlSuccessfullRegistration(pid || '');
+		console.log(pid);
 		console.log(link);
 		window.location.href = `${link.data}?paymentId=${pid}`;
 	};
